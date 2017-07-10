@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        asyncTask.execute("25.180000", "89.530000"); //  asyncTask.execute("Latitude", "Longitude")
+        asyncTask.execute("28.5459960", "77.3262500"); //  asyncTask.execute("Latitude", "Longitude")
 
 
 
