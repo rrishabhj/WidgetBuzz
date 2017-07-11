@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".WeatherService"/>
+        <service android:name=".controller.WeatherService"/>
 
         <receiver android:name=".WeatherWidget">
             <intent-filter>

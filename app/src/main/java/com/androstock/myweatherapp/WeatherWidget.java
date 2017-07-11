@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
+import com.androstock.myweatherapp.controller.WeatherService;
 import com.androstock.myweatherapp.model.WeatherData;
 
 /**

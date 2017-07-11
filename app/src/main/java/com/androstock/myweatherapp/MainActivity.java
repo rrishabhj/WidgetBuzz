@@ -1,20 +1,18 @@
 package com.androstock.myweatherapp;
 
-import android.content.pm.PackageManager;
 import android.graphics.Typeface;
-import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.androstock.myweatherapp.controller.Function;
+import com.androstock.myweatherapp.controller.WeatherService;
 import com.androstock.myweatherapp.utilities.GPSTracker;
 import com.androstock.myweatherapp.utilities.Utilities;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -98,6 +96,12 @@ public class MainActivity extends AppCompatActivity {
                     weatherIcon.setText(Html.fromHtml(weather_iconText));
 
                     WeatherService.startActionWeatherUpdate(MainActivity.this);
+                }
+
+                @Override
+                public void processFail() {
+                    //internet is down
+                    weatherIcon.setText("Switch On Internet");
                 }
             });
             asyncTask.execute(String.valueOf(lat), String.valueOf(lon));

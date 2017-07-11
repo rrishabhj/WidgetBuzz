@@ -1,7 +1,6 @@
-package com.androstock.myweatherapp;
+package com.androstock.myweatherapp.controller;
 
 import android.app.IntentService;
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -9,8 +8,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
-import android.text.Html;
 
+import com.androstock.myweatherapp.WeatherWidget;
 import com.androstock.myweatherapp.model.WeatherData;
 import com.androstock.myweatherapp.utilities.GPSTracker;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -24,7 +23,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 public class WeatherService extends IntentService {
 
     public static final String ACTION_UPDATE_PLANT_WIDGETS = "com.androstock.myweatherapp.action.update_weather_widget";
-    private String temp;
     private double lat;
     private double lon;
     private FusedLocationProviderClient mFusedLocationClient;
@@ -102,6 +100,12 @@ public class WeatherService extends IntentService {
                 int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(getBaseContext(), WeatherWidget.class));
                 //Now update all widgets
                 WeatherWidget.updatePlantWidgets(getBaseContext(), appWidgetManager, weatherData, appWidgetIds);
+
+            }
+
+            @Override
+            public void processFail() {
+
 
             }
         });

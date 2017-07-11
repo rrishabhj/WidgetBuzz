@@ -1,4 +1,4 @@
-package com.androstock.myweatherapp;
+package com.androstock.myweatherapp.controller;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -58,6 +58,7 @@ public class Function {
 	public interface AsyncResponse {
 
 		void processFinish(String output1, String output2, String output3, String output4, String output5, String output6, String output7, String output8);
+		void processFail();
 	}
 
 
@@ -76,10 +77,11 @@ public class Function {
 		protected JSONObject doInBackground(String... params) {
 
 			JSONObject jsonWeather = null;
-			try {
 				jsonWeather = getWeatherJSON(params[0], params[1]);
-			} catch (Exception e) {
-				Log.d("Error", "Cannot process JSON results", e);
+
+			if (jsonWeather ==null){
+				//  can't process th json
+				delegate.processFail();
 			}
 
 
@@ -90,7 +92,7 @@ public class Function {
 		protected void onPostExecute(JSONObject json) {
 			try {
 			if(json != null){
-				JSONObject details = json.getJSONArray("weather").getJSONObject(0);
+				JSONObject details = json.getJSONArray("weather").getJSONObject(1);
 				JSONObject main = json.getJSONObject("main");
 				DateFormat df = DateFormat.getDateTimeInstance();
 
@@ -110,6 +112,7 @@ public class Function {
 			}
 			} catch (JSONException e) {
 				//Log.e(LOG_TAG, "Cannot process JSON results", e);
+				delegate.processFail();
 			}
 
 
@@ -144,6 +147,7 @@ public class Function {
 			}
 			return data;
 		}catch(Exception e){
+
 			return null;
 		}
 	}
