@@ -16,9 +16,6 @@ import java.util.Locale;
 
 public class Function {
 
-	// Project Created by Ferdousur Rahman Shajib
-	// www.androstock.com
-
 	private static final String OPEN_WEATHER_MAP_URL =
 			"http://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&units=metric";
 

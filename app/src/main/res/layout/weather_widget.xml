@@ -1,10 +1,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/appwidget_ll"
     android:layout_width="match_parent"
-    android:layout_height="52dp"
-    android:orientation="horizontal"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:padding="@dimen/widget_margin">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:orientation="horizontal"
+            android:padding="@dimen/widget_margin">
 
         <TextView
             android:id="@+id/appwidget_city"
@@ -15,7 +20,7 @@
             android:layout_centerVertical="true"
             android:layout_margin="1dp"
             android:gravity="center"
-            android:background="#b1b1b1"
+            android:background="#656565"
             android:elevation="4dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Noida, IN"
@@ -30,7 +35,7 @@
             android:layout_weight="1.2"
             android:layout_height="match_parent"
             android:layout_margin="1dp"
-            android:background="#b1b1b1"
+            android:background="#656565"
             android:elevation="4dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="18dp"
@@ -46,12 +51,19 @@
             android:elevation="4dp"
             android:textSize="18dp"
             android:layout_margin="1dp"
-            android:background="#b1b1b1"
+            android:background="#656565"
             android:text="21* C"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:gravity="center"
             android:textColor="#ffffff"
             android:textStyle="normal|bold" />
+        </LinearLayout>
 
+        <AnalogClock
+            android:id="@+id/myAnalogClock"
+            android:layout_width="match_parent"
+            android:layout_height="102dp"
+            >
+        </AnalogClock>
 
 </LinearLayout>

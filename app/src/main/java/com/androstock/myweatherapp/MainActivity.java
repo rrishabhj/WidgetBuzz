@@ -16,10 +16,6 @@ import com.google.android.gms.location.LocationServices;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Project Created by Ferdousur Rahman Shajib
-    // www.androstock.com
-
-
 
     TextView cityField, detailsField, currentTemperatureField, humidity_field, pressure_field, weatherIcon, updatedField;
 
