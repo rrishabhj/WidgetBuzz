@@ -1,7 +1,10 @@
 package com.androstock.myweatherapp;
 
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
@@ -9,13 +12,15 @@ import android.widget.TextView;
 
 import com.androstock.myweatherapp.utilities.GPSTracker;
 import com.androstock.myweatherapp.utilities.Utilities;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 public class MainActivity extends AppCompatActivity {
 
     // Project Created by Ferdousur Rahman Shajib
     // www.androstock.com
 
-    private FusedLocationProviderClient mFusedLocationClient;
 
 
     TextView cityField, detailsField, currentTemperatureField, humidity_field, pressure_field, weatherIcon, updatedField;
@@ -23,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     Typeface weatherFont;
     private double lat = -1;
     private double lon = -1;
+    private FusedLocationProviderClient mFusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         //getting location permission
         Utilities.getLocationPermission(MainActivity.this);
-
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getBaseContext());
         weatherFont = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/weathericons-regular-webfont.ttf");
 
         cityField = (TextView)findViewById(R.id.city_field);
@@ -52,9 +58,30 @@ public class MainActivity extends AppCompatActivity {
             lon = gpsTracker.getLongitude();
         }else {
             gpsTracker.showSettingsAlert();
-            gpsTracker.stopUsingGPS();
+
+//            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                // TODO: Consider calling
+//                //    ActivityCompat#requestPermissions
+//                // here to request the missing permissions, and then overriding
+//                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                //                                          int[] grantResults)
+//                // to handle the case where the user grants the permission. See the documentation
+//                // for ActivityCompat#requestPermissions for more details.
+//                return;
+//            }
+//            mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+//                @Override
+//                public void onSuccess(Location location) {
+//
+//                    if (location != null){
+//                        lat = location.getLatitude();
+//                        lon = location.getLongitude();
+//                    }
+//                }
+//            });
 
         }
+
 
         Log.d("LocationTracker","lat:"+lat+"lon:"+lon);
 
@@ -69,8 +96,8 @@ public class MainActivity extends AppCompatActivity {
                     humidity_field.setText("Humidity: " + weather_humidity);
                     pressure_field.setText("Pressure: " + weather_pressure);
                     weatherIcon.setText(Html.fromHtml(weather_iconText));
-                    WeatherService.startActionWeatherUpdate(MainActivity.this);
 
+                    WeatherService.startActionWeatherUpdate(MainActivity.this);
                 }
             });
             asyncTask.execute(String.valueOf(lat), String.valueOf(lon));
@@ -79,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
             // can't get the gps location
             weatherIcon.setText("Can't get Your Location");
         }
+
     }
-
-
 }

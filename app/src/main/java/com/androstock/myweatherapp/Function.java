@@ -118,10 +118,6 @@ public class Function {
 	}
 
 
-
-
-
-
 	public static JSONObject getWeatherJSON(String lat, String lon){
 		try {
 			URL url = new URL(String.format(OPEN_WEATHER_MAP_URL, lat, lon));
@@ -146,7 +142,6 @@ public class Function {
 			if(data.getInt("cod") != 200){
 				return null;
 			}
-
 			return data;
 		}catch(Exception e){
 			return null;

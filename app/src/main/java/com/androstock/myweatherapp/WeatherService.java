@@ -6,10 +6,16 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.support.v4.app.ActivityCompat;
 import android.text.Html;
 
 import com.androstock.myweatherapp.model.WeatherData;
 import com.androstock.myweatherapp.utilities.GPSTracker;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 /**
  * Created by DMI on 10-07-2017.
@@ -21,6 +27,8 @@ public class WeatherService extends IntentService {
     private String temp;
     private double lat;
     private double lon;
+    private FusedLocationProviderClient mFusedLocationClient;
+
 
     public WeatherService() {
         super("WeatherService");
@@ -31,6 +39,7 @@ public class WeatherService extends IntentService {
         Intent intent = new Intent(context, WeatherService.class);
         intent.setAction(ACTION_UPDATE_PLANT_WIDGETS);
         context.startService(intent);
+
     }
 
     @Override
@@ -45,13 +54,38 @@ public class WeatherService extends IntentService {
 
     private void handleActionWeather() {
 
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getBaseContext());
+        GPSTracker gpsTracker = new GPSTracker(getBaseContext());
 
-        GPSTracker gpsTracker=new GPSTracker(getBaseContext());
-
-        if (gpsTracker.canGetLocation()){
+        if (gpsTracker.canGetLocation()) {
             lat = gpsTracker.getLatitude();
             lon = gpsTracker.getLongitude();
+        }else {
+
+
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+
+                    if (location != null) {
+                        lat = location.getLatitude();
+                        lon = location.getLongitude();
+                    }
+                }
+            });
         }
+
+
 
         Function.placeIdTask asyncTask =new Function.placeIdTask(new Function.AsyncResponse() {
             public void processFinish(String weather_city, String weather_description, String weather_temperature, String weather_humidity, String weather_pressure, String weather_updatedOn, String weather_iconText, String sun_rise) {
