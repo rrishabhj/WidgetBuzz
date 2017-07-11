@@ -8,6 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.Html;
 
+import com.androstock.myweatherapp.model.WeatherData;
+import com.androstock.myweatherapp.utilities.GPSTracker;
+
 /**
  * Created by DMI on 10-07-2017.
  */
@@ -16,6 +19,8 @@ public class WeatherService extends IntentService {
 
     public static final String ACTION_UPDATE_PLANT_WIDGETS = "com.androstock.myweatherapp.action.update_weather_widget";
     private String temp;
+    private double lat;
+    private double lon;
 
     public WeatherService() {
         super("WeatherService");
@@ -40,10 +45,18 @@ public class WeatherService extends IntentService {
 
     private void handleActionWeather() {
 
+
+        GPSTracker gpsTracker=new GPSTracker(getBaseContext());
+
+        if (gpsTracker.canGetLocation()){
+            lat = gpsTracker.getLatitude();
+            lon = gpsTracker.getLongitude();
+        }
+
         Function.placeIdTask asyncTask =new Function.placeIdTask(new Function.AsyncResponse() {
             public void processFinish(String weather_city, String weather_description, String weather_temperature, String weather_humidity, String weather_pressure, String weather_updatedOn, String weather_iconText, String sun_rise) {
 
-                   temp = weather_city;
+                WeatherData weatherData=new WeatherData(weather_city, weather_description, weather_temperature, weather_humidity, weather_pressure, weather_updatedOn,weather_iconText,sun_rise);
 //                cityField.setText(weather_city);
 //                updatedField.setText(weather_updatedOn);
 //                detailsField.setText(weather_description);
@@ -54,13 +67,11 @@ public class WeatherService extends IntentService {
                 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getBaseContext());
                 int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(getBaseContext(), WeatherWidget.class));
                 //Now update all widgets
-                WeatherWidget.updatePlantWidgets(getBaseContext(), appWidgetManager, temp, appWidgetIds);
+                WeatherWidget.updatePlantWidgets(getBaseContext(), appWidgetManager, weatherData, appWidgetIds);
 
             }
         });
-        asyncTask.execute("28.5459960", "77.3262500"); //  asyncTask.execute("Latitude", "Longitude")
-
-
+        asyncTask.execute(String.valueOf(lat), String.valueOf(lon)); //  asyncTask.execute("Latitude", "Longitude")
 
     }
 

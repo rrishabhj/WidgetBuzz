@@ -1,21 +1,57 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/appwidget_ll"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#09C"
+    android:layout_height="52dp"
+    android:orientation="horizontal"
     android:padding="@dimen/widget_margin">
 
-    <TextView
-        android:id="@+id/appwidget_weather"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="8dp"
-        android:background="#09C"
-        android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
-        android:textColor="#ffffff"
-        android:textSize="24sp"
-        android:textStyle="bold|italic" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/appwidget_city"
+            android:layout_width="0dp"
+            android:layout_weight="1.3"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="1dp"
+            android:gravity="center"
+            android:background="#b1b1b1"
+            android:elevation="4dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Noida, IN"
+            android:textColor="#ffffff"
+            android:textSize="18dp"
+            android:textStyle="normal|bold"
+            android:typeface="normal" />
+
+        <TextView
+            android:id="@+id/appwidget_weather_icon"
+            android:layout_width="0dp"
+            android:layout_weight="1.2"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:background="#b1b1b1"
+            android:elevation="4dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="18dp"
+            android:text="Icon"
+            android:gravity="center"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/appwidget_temp"
+            android:layout_width="0dp"
+            android:layout_weight="0.8"
+            android:layout_height="match_parent"
+            android:elevation="4dp"
+            android:textSize="18dp"
+            android:layout_margin="1dp"
+            android:background="#b1b1b1"
+            android:text="21* C"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:textStyle="normal|bold" />
+
+
+</LinearLayout>

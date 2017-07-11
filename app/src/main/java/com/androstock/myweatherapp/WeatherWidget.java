@@ -7,12 +7,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
+import com.androstock.myweatherapp.model.WeatherData;
+
 /**
  * Implementation of App Widget functionality.
  */
 public class WeatherWidget extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,String weatherRes,
+    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,WeatherData weatherData,
                                 int appWidgetId) {
 
         // Create an Intent to launch MainActivity when clicked
@@ -21,9 +23,12 @@ public class WeatherWidget extends AppWidgetProvider {
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.weather_widget);
 
-        views.setTextViewText(R.id.appwidget_weather,"rishabh");
-        // Widgets allow click handlers to only launch pending intents
-        views.setOnClickPendingIntent(R.id.appwidget_weather, pendingIntent);
+        views.setTextViewText(R.id.appwidget_city,weatherData.getWeather_city());
+        views.setTextViewText(R.id.appwidget_temp,weatherData.getWeather_temperature());
+        views.setTextViewText(R.id.appwidget_weather_icon,weatherData.getWeather_description());
+
+//        // Widgets allow click handlers to only launch pending intents
+        views.setOnClickPendingIntent(R.id.appwidget_ll, pendingIntent);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -38,7 +43,7 @@ public class WeatherWidget extends AppWidgetProvider {
     }
 
     public static void updatePlantWidgets(Context context, AppWidgetManager appWidgetManager,
-                                          String weatherRes, int[] appWidgetIds) {
+                                          WeatherData weatherRes, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, weatherRes, appWidgetId);
         }
